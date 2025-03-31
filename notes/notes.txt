@@ -1,0 +1,76 @@
+https://vivonomicon.com/2018/04/02/bare-metal-stm32-programming-part-1-hello-arm/
+
+CPU: STM32L476RG
+Cortex-M4 with FPU, DSP
+
+According to pdf (3.5), SRAM1 has 96kbytes and is mapped at 0x2000000
+SRAM2 is 32kbytes, mapped at 0x1000000, has hardware parity and can be retained during standby
+Probably can just use SRAM1 for now
+
+1048576 bytes flash (1Mbyte) according to st-info, mapped at 0x08000000 (memory map 5. in pdf)
+
+https://stackoverflow.com/a/25728024/5457426 for command line options
+
+https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html - for docs
+
+https://sourceware.org/binutils/docs-2.19/as/ARM-Directives.html - for directives
+
+VTOR register contains address of the vector table, by defauklt its at the beginning of flash it seems
+
+Finally found vector table layout - its in cortex-m4 spec, in  B1.5 - exception model
+specifically, B1.5.2 lists exception numbers, and B1.5.3 specifies layout
+So i guess vector table layout is the same for all cortex-m4 chips, for the first 16 entries - makes sense
+same information is in Cortex-m4 programmer manual sectoin 2.3 Exception model, in 2.3.2
+
+Full interrupt table found in Reference Manual, finally, section 13.3
+
+BOOT bits define the type of boot - 3 options ar edefined in reference manual 2.6.1
+BOOT0 is a physical pin, that is sampled within first few clock cycles after reset/standby and latched on afterwards
+BOOT1 is a bit in User option byte
+BOOT0 seems to be tied to ground in hardware through a 10k resistor (board schematic)
+however, it is routed to pin 7 on connector CN7 (board manual, 6.10, Figure 24) (also board schematic)
+It seems it can also be controlled from the st-link programmer but not sure.
+
+The guy uses ram boot base or something after vector table, but i cannot find any documentation for it.
+Seems to just be a convention for bootloaders which jump into ram afterwards? OR SRAM booting, not sure. Probably not necessary.
+
+compilation and linking:
+arm-none-eabi-gcc -x assembler-with-cpp -c -O0 -mcpu=cortex-m4 -mthumb -Wall stm32l476/core.S -o core.o
+arm-none-eabi-gcc core.o -mcpu=cortex-m4 -mthumb -Wall --specs=nosys.specs -nostdlib -lgcc -T./stm32l476/stm32l476.ld -o main.elf
+
+all works except for --specs, here is some explanation: https://metebalci.com/blog/demystifying-arm-gnu-toolchain-specs-nano-and-nosys/
+but the gist is, that nosys is for bare metal compilation with newlib.a
+
+convert to flat binary:
+arm-none-eabi-objcopy -O binary main.elf fw.bin
+
+flash:
+st-flash write fw.bin 0x8000000
+
+now for debugging:
+start st-util in another terminal for remote debugging over USB/STLINK/JTAG/whatever the hell
+
+arm-none-eabi-gdb main.elf
+in gdb:
+target extended-remote :4242 (default port)
+load (loads symbols from elf)
+
+The user LED seems to be connected to PA5 according to a schematic, also one arduino connector (pin 6 in CH5) and morpho connector (pin 11 in CH10)
+The user push button is connected to PC13 according to the schematic
+Both connections are verified by the board manual (6.4 and 6.5)
+
+First thing before using a peripheral is to enable it - since they are connected by a bus, it is done by a register specific to that peripheral.
+This is similar to that RISC-V kendryte chip, since i guess APB is an industry standard by now.
+On STM32L476 all GPIO systems are plugged to AHB2 (datasheet 5. memory map - table 19)
+
+The main chapter for the RCC topic is 6. in reference manual (RCC - reset and clock control - enabling peripheral means enabling its clock on the bus)
+
+RCC is plugged into AHB1 itself - i'd assume its somewhere internally in the chip, but i guess its just always on by default, and just happens to be on that bus.
+
+6.4.17 in reference manual describes the AHB2ENR register, which contains bits enabling clock source (and so the peripheral itself) for each of the GPIO modules.
+
+
+
+
+
+

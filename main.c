@@ -36,7 +36,9 @@ int main(void) {
     int val = 0;
     while (1) {
         if(val == 0) {
-            // Output high to light the led
+            // Output high/low repeatedly to blink the led
+            // Due to clock speed, blinking is not visible, so it just pretty much lights it on
+            // TODO: blink the led using a timer mayhaps?
             GPIOA->ODR ^= (1 << LED_PIN);
         }
         val += 1;

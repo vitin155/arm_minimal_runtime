@@ -1,8 +1,8 @@
 Building runtime for STM32L476RG (Cortex-M4F) without using HAL and generated headers.
 Running on the Nucleo-64 L476RG board.
 
-At the moment the program only lights the USER LED built on the nucleo board.
-In the future im planning to get some more peripherals running.
+At the moment the program only blinks the USER LED built on the nucleo board twice per second using Timer7 and interrupts.
+I hope to get DMA working soon.
 
 This project is similar to my other project "avr_minimal_runtime" which was based on Atmega8, AVR architecture.
 (As of writing this, available at https://github.com/msaw328/avr_minimal_runtime)

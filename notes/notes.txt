@@ -69,8 +69,16 @@ RCC is plugged into AHB1 itself - i'd assume its somewhere internally in the chi
 
 6.4.17 in reference manual describes the AHB2ENR register, which contains bits enabling clock source (and so the peripheral itself) for each of the GPIO modules.
 
+For setting the timers, Reference Manual 6.2 has a great graphic in Figure 15. which displays the clock tree in the system.
+Setting prescaler to 39999 for TIM6 generates clock pulses with frequency of 100hz, which is still somewhat fast for human eye.
+This can, however, be further divided through the bus prescaler and additional x2 prescaler for TIM2-7.
 
+Okay i forgot i can set frequency by combinging prescaler and top value (ARR), no need for additional bus prescaling:
+4MHz with top value set to 40000 gives 100Hz clock, then by setting prescaling to 50 (49 PSC value) it results in 2Hz frequency (twice per second).
 
+After reading into multiple sources it seems that every interrupt has to be separately enabled in NVIC as well as per-peripheral interrupt flag.
+Since this is specific to arm7m arch, it is not in the stm32 reference manual. Instead its in arm7m reference mnaual in B3.4.3
+This seems to be confirmed in https://github.com/ARM-software/CMSIS_4/blob/master/CMSIS/Include/core_cm4.h, since EnableInterrupt and SetPriority use those registers.
 
-
-
+Here is some good answer on why to enable in both places:
+https://community.st.com/t5/stm32-mcus-products/diffrence-between-enabling-interrupt-in-nvic-and-enabling/td-p/484836

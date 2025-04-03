@@ -3,3 +3,4 @@
 *.bin
 docs/
 nopush/
+.gdb_history

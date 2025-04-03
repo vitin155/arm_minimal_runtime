@@ -55,6 +55,7 @@ void init_hw() {
 
 // Interrupt handler for TIM6 overflow event
 // https://gcc.gnu.org/onlinedocs/gcc/ARM-Function-Attributes.html for attribute
+// It seems this attribute is not mandatory for arm7m, since it says its ignored - may be worth using in case of bugs though
 void TIM7_handler()  {
     // flip output of the LED
     GPIOA->ODR ^= (1 << LED_PIN);

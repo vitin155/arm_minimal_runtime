@@ -29,6 +29,7 @@ Recommended manuals which helped me along the way, in no specific order:
  (from ARM website)
  - ARM and THUMB instruction set specs
  - Cortex-M4 Technical reference manual
+ - ARM7M Architecture Reference manual 
 
 The solution to any problem usually required knowledge from multiple of those sources.
 I recommend looking in all of them selectively by topic when needed.

